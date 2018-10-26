@@ -1,8 +1,47 @@
 //Data Controller
 
 var budgetController = (function() {
-  // Some code
+
+  var Expenses = function(id,description,value) {
+    this.id = id;
+    this.description = description;
+    this.value = value;
+  }
+
+  var Income = function(id,description,value) {
+    this.id = id;
+    this.description = description;
+    this.value = value;
+  }
+
+  //Defining DataStructues
+
+
+
+  var totalIncome = 0;
+  var totalExpenses = 0;
+
+  var data = {
+    items:{
+      inc[],
+      exp[],
+    },
+    totals:{
+      inc:0,
+      exp:0  
+    }
+
+  }
+
+
+
+
+
+
+
 })();
+
+
 
 
 
