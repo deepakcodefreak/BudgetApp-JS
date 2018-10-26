@@ -93,7 +93,7 @@ var UIController = (function() {
       return {
         type: document.querySelector(DOMstrings.inputType).value,                //inc or exp
         description: document.querySelector(DOMstrings.inputDescription).value,
-        value: document.querySelector(DOMstrings.inputValue).value
+        value:  parseFloat(document.querySelector(DOMstrings.inputValue).value)
       }
 
     },
@@ -117,13 +117,9 @@ var UIController = (function() {
 
           // replace placeholder text with real one
 
-          //console.log(newHtml);
           newHtml = html.replace('%id%',obj.id);
-          //console.log(newHtml);
           newHtml = newHtml.replace('%value%',obj.value);
-          //console.log(newHtml);
           newHtml = newHtml.replace('%description%',obj.description);
-          console.log(newHtml);
 
           // Inert the HTML into DOM
 
@@ -166,25 +162,39 @@ var Controller = (function(budgetCltr, UICltr) {
 
   }
 
+  var updateBudget = function(){
+
+    // 1. Calculate the budget
+
+    // 2. Return the budget
+
+    // 3. Display the budget on UI
+
+  }
+
 
   var cltrAddItem = function() {
     var input,newIteml
     // 1. Get the field input
     input = UICltr.getInput();
 
-    // 2. Add the item to the budget Controller
-    newItem = budgetCltr.addItem(input.type,input.description,input.value);
+    if (input.description !== "" && !isNaN(input.value) && input.value > 0 ) {
 
-    //3. Add the item to the UI
+          // 2. Add the item to the budget Controller
+          newItem = budgetCltr.addItem(input.type,input.description,input.value);
 
-      UIController.addListItem(newItem,input.type)
+          //3. Add the item to the UI
 
-    //4 .Clear fields
-      UIController.clearFields();
+            UIController.addListItem(newItem,input.type)
 
-    //5. Calculate the budget
+          //4 .Clear fields
+            UIController.clearFields();
 
-    //6. Display the Budget on the UI
+          // 5. Calculate and update budget
+              updateBudget();
+
+    }
+
 
   }
 
