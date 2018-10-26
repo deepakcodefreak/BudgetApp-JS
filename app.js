@@ -1,14 +1,14 @@
 //Data Controller
 
-var budgetController = (function(){
-// Some code
+var budgetController = (function() {
+  // Some code
 })();
 
 
 
 
 //UI Controller
-var UIController = (function(){
+var UIController = (function() {
 
   var DOMstrings = {
     inputType: '.add__type',
@@ -19,17 +19,17 @@ var UIController = (function(){
 
 
   return {
-    getInput : function(){
+    getInput: function() {
 
-       return {
-           type: document.querySelector(DOMstrings.inputType).value, //inc or exp
-           description: document.querySelector(DOMstrings.inputDescription).value,
-           value: document.querySelector(DOMstrings.inputValue).value
-       }
+      return {
+        type: document.querySelector(DOMstrings.inputType).value, //inc or exp
+        description: document.querySelector(DOMstrings.inputDescription).value,
+        value: document.querySelector(DOMstrings.inputValue).value
+      }
 
-     },
+    },
 
-    getDOMstrings: function(){
+    getDOMstrings: function() {
       return DOMstrings;
     }
   }
@@ -40,38 +40,47 @@ var UIController = (function(){
 
 
 //App Controller
-var Controller = (function(budgetCltr,UICltr){
+var Controller = (function(budgetCltr, UICltr) {
 
+  var setUpEventListener = function(){
     var DOM = UICltr.getDOMstrings();
 
-  var cltrAddItem = function(){
+    document.querySelector(DOM.inputBtn).addEventListener('click', cltrAddItem);
 
-        // 1. Get the field input
-            var input = UICltr.getInput();
-            console.log(input);
-
-        // 2. Add the item to the budget Controller
-
-        //3. Add the item to the UI
-
-        //4. Calculate the budget
-
-        //5. Display the Budget on the UI
-
-  }
-
-  document.querySelector(DOM.inputBtn).addEventListener('click',cltrAddItem);
-
-
-  document.addEventListener('keypress',function(event){
+    document.addEventListener('keypress', function(event) {
 
       if (event.keyCode === 13 || event.which === 13) {
         cltrAddItem();
       }
+    })
 
-  })
+  }
 
 
+  var cltrAddItem = function() {
+
+    // 1. Get the field input
+    var input = UICltr.getInput();
+    console.log(input);
+    // 2. Add the item to the budget Controller
+
+    //3. Add the item to the UI
+
+    //4. Calculate the budget
+
+    //5. Display the Budget on the UI
+
+  }
+
+  return {
+    init:function(){
+      console.log('App started');
+      setUpEventListener();
+    }
+  }
 
 
-})(budgetController,UIController)
+})(budgetController, UIController)
+
+
+Controller.init();
