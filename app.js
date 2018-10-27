@@ -164,6 +164,7 @@ return {
 var UIController = (function() {
 
   var DOMstrings = {
+
     inputType: '.add__type',
     inputDescription: `.add__description`,
     inputValue: '.add__value',
@@ -175,7 +176,7 @@ var UIController = (function() {
     expenseLable:'.budget__expenses--value',
     percentageLabel:'.budget__expenses--percentage',
     container:'.container',
-
+    ExpensesPercentLabel:'.item__percentage',
 
   }
 
@@ -201,9 +202,9 @@ var UIController = (function() {
           //create HTML string with placeholder text
           if (type === 'inc') {
             element = DOMstrings.incomeContainer;
-              html =  '<div class="item clearfix" id="inc-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
+            html =  '<div class="item clearfix" id="inc-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
 
-        }else if(type === 'exp'){
+          }else if(type === 'exp'){
             element = DOMstrings.expenseContainer;
             html =  '<div class="item clearfix" id="exp-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
           }
@@ -248,6 +249,32 @@ var UIController = (function() {
       }
 
     },
+
+  displayPercentages: function(percentages){
+
+      var fields = document.querySelectorAll(DOMstrings.ExpensesPercentLabel);
+
+      var nodeForEach = function(list,callBack){
+
+          for (let i = 0; i < list.length; i++) {
+              callBack(list[i],i);
+          }
+      }
+
+    nodeForEach(fields,function(current,index){
+
+      if (percentages[index] > 0) {
+          current.textContent = percentages[index] + '%';
+      }else {
+        current.textContent = '---';
+      }
+
+
+    })
+
+
+
+  },
 
   }
 
@@ -300,7 +327,7 @@ var Controller = (function(budgetCltr, UICltr) {
       // get the percentage from budgetController...
           expPer = budgetCltr.getPercentages();
       // Display the percentages on the UI...
-      console.log(expPer);
+        UICltr.displayPercentages(expPer);
 
   }
 
