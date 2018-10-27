@@ -94,6 +94,21 @@ return {
       }
 
   },
+  deleteItem:function(type,id){
+    var ids,index;
+
+    ids = data.items[type].map(function(current){
+        return current.id
+      })
+
+    index = ids.indexOf(id);
+
+    if (index !== -1) {
+      data.items[type].splice(index,1);
+    }
+
+
+  },
 
   testing: function(){
     console.log(data);
@@ -279,10 +294,13 @@ var Controller = (function(budgetCltr, UICltr) {
 
       splitID = itemID.split('-');
       type = splitID[0];
-      Id = splitID[1];
+      Id = parseInt(splitID[1]);
 
     }
-    //1. Dalete the item from tha DS
+
+    //1. Dalete the item from the DS
+        budgetCltr.deleteItem(type,Id);
+
 
     //2. Delete the item from the UI
 
