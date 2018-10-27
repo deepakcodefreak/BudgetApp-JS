@@ -6,7 +6,24 @@ var budgetController = (function() {
     this.id = id;
     this.description = description;
     this.value = value;
+    this.percentage = -1;
   }
+
+
+  Expenses.prototype.calPercentage = function(totalIncome) {
+
+          if (totalIncome > 0 ) {
+              this.percentage =  Math.round((this.value/totalIncome)*100);
+          }else{
+            this.percentage = -1;
+          }
+  };
+
+  Expenses.prototype.getPercentage = function() {
+    return this.percentage;
+  };
+
+
 
   var Income = function(id,description,value) {
     this.id = id;
@@ -84,6 +101,23 @@ return {
       }
 
   },
+
+  calculatePercentages: function(){
+
+      data.items.exp.forEach(function(current){
+        current.calPercentage(data.totals.inc);
+      })
+
+  },
+
+  getPercentages : function(){
+    var calPer = data.items.exp.map(function(current){
+      return current.getPercentage();
+    })
+
+    return calPer;
+  },
+
   getBudget: function(){
 
       return {
@@ -114,9 +148,6 @@ return {
     console.log(data);
   }
 }
-
-
-
 
 
 
@@ -259,6 +290,17 @@ var Controller = (function(budgetCltr, UICltr) {
     // 3. Display the budget on UI
     UICltr.displayBudget(budget);
 
+  }
+
+  var updatePercentages = function(){
+        var expPer;
+
+      // calculate and update the Percentages...
+          budgetCltr.calculatePercentages();
+      // get the percentage from budgetController...
+          expPer = budgetCltr.getPercentages();
+      // Display the percentages on the UI...
+      console.log(expPer);
 
   }
 
@@ -282,6 +324,9 @@ var Controller = (function(budgetCltr, UICltr) {
 
           // 5. Calculate and update budget
               updateBudget();
+
+          //6.Calculate and upadte percentages
+            updatePercentages();
 
     }
 
@@ -310,6 +355,10 @@ var Controller = (function(budgetCltr, UICltr) {
 
     //3. update the budget and Display the new Budget...
       updateBudget();
+
+    //4.Calculate and upadte percentages
+        updatePercentages();
+
 
   }
 
