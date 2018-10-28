@@ -179,7 +179,7 @@ var UIController = (function() {
     ExpensesPercentLabel:'.item__percentage',
     dateLabel:'.budget__title--month',
 
-  }
+  };
 
 
   formatNumber =  function(num,type){
@@ -200,6 +200,13 @@ var UIController = (function() {
 
       return ( type === 'exp' ? '-' : '+' ) + ' ' + int + '.' + dec;
   };
+
+  var nodeForEach = function(list,callBack){
+      for (let i = 0; i < list.length; i++) {
+          callBack(list[i],i);
+      }
+  };
+
 
 
 
@@ -278,20 +285,14 @@ var UIController = (function() {
 
       var fields = document.querySelectorAll(DOMstrings.ExpensesPercentLabel);
 
-      var nodeForEach = function(list,callBack){
 
-          for (let i = 0; i < list.length; i++) {
-              callBack(list[i],i);
-          }
-      }
+      nodeForEach(fields,function(current,index){
 
-    nodeForEach(fields,function(current,index){
-
-      if (percentages[index] > 0) {
-          current.textContent = percentages[index] + '%';
-      }else {
-        current.textContent = '---';
-      }
+        if (percentages[index] > 0) {
+            current.textContent = percentages[index] + '%';
+        }else {
+          current.textContent = '---';
+        }
 
     })
 
@@ -312,6 +313,19 @@ var UIController = (function() {
 
   },
 
+  changedType: function(){
+    var fields;
+
+    fields = document.querySelectorAll( DOMstrings.inputType + ',' + DOMstrings.inputDescription + ',' + DOMstrings.inputValue);
+
+    nodeForEach(fields,function(current){
+      current.classList.toggle('red-focus');
+    })
+
+    document.querySelector('.add__btn').classList.toggle('red');
+
+  }
+
 
 
   }
@@ -322,13 +336,11 @@ var UIController = (function() {
 
 
 //App Controller
-var Controller = (function(budgetCltr, UICltr) {
-
+  var Controller = (function(budgetCltr, UICltr) {
   var setUpEventListener = function(){
-    var DOM = UICltr.getDOMstrings();
+  var DOM = UICltr.getDOMstrings();
 
     document.querySelector(DOM.inputBtn).addEventListener('click', cltrAddItem);
-
     document.addEventListener('keypress', function(event) {
 
       if (event.keyCode === 13 || event.which === 13) {
@@ -336,9 +348,8 @@ var Controller = (function(budgetCltr, UICltr) {
       }
     })
 
-
     document.querySelector(DOM.container).addEventListener('click',cltrDeleteItem);
-
+    document.querySelector(DOM.inputType).addEventListener('change',UICltr.changedType)
 
   }
 
@@ -349,8 +360,8 @@ var Controller = (function(budgetCltr, UICltr) {
       budgetCltr.calculateBudget();
 
     // 2. Return the budget
-    budget = budgetCltr.getBudget();
-    console.log(budget);
+      budget = budgetCltr.getBudget();
+      console.log(budget);
 
     // 3. Display the budget on UI
     UICltr.displayBudget(budget);
